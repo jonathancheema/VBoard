@@ -1,8 +1,11 @@
 package gui;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
+import org.json.*;
 
 import client.Client;
 import javafx.collections.FXCollections;
@@ -233,35 +236,70 @@ public class FXMLController {
 
 	private void setUpGamePieces(String gameName) {
 		File gameDir = new File("games/" + gameName);
-		File[] gameFolders = gameDir.listFiles(new FileFilter() {
-			public boolean accept(File pathname) {
-				return pathname.isDirectory();
-			}
-		});
+//		File[] gameFolders = gameDir.listFiles(new FileFilter() {
+//			public boolean accept(File pathname) {
+//				return pathname.isDirectory();
+//			}
+//		});
 
-		if (gameFolders == null) {
+		if (gameDir == null) {
 			System.out.println("gameFolders was null");
 		} else {
-			File[] gameImages = gameFolders[1].listFiles();
+			String jsonData = readFile("games/"+gameName+"/loadInstructions.json");
+		    JSONObject jobj = new JSONObject(jsonData);
+		    JSONArray jarr = new JSONArray(jobj.getJSONArray("stack").toString());
+		    System.out.println("board to use: " + jobj.getString("board"));
+		    
+		    String gameImages = jarr.getString(0);
+		    File testDir = new File("games/" + gameName + "/" + gameImages);
+		    String [] images = testDir.list();
+		    for(int i = 0; i < images.length; i++) {
+		        //System.out.println("Stacking: "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
+		        Image temp = new Image("File:games/"+gameName+"/"+gameImages+"/"+images[i]);
+		        ImageView tempImageView = new ImageView(temp);
+		        tempImageView.setId("image_"+i);
+		        tempImageView.setOnMousePressed(imageOnMousePressedEventHandler);
+		        tempImageView.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+		        tempImageView.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+		        this.gameBox.getChildren().add(tempImageView);
+		    }
+	    }
+			
+//			File[] gameImages = gameFolders[1].listFiles();
+//			Image gp1 = new Image("File:" + gameImages[0] + "");
+//			Image gp2 = new Image("File:" + gameImages[1] + "");
+//			Image gp3 = new Image("File:" + gameImages[2] + "");
+//			this.gamePiece_1.setImage(gp1);
+//			this.gamePiece_2.setImage(gp2);
+//			this.gamePiece_3.setImage(gp3);
+//
+//			gamePiece_1.setOnMousePressed(imageOnMousePressedEventHandler);
+//			gamePiece_1.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+//			gamePiece_1.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+//			gamePiece_2.setOnMousePressed(imageOnMousePressedEventHandler);
+//			gamePiece_2.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+//			gamePiece_2.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+//			gamePiece_3.setOnMousePressed(imageOnMousePressedEventHandler);
+//			gamePiece_3.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+//			gamePiece_3.setOnMouseDragged(imageOnMouseDraggedEventHandler);
 
-			Image gp1 = new Image("File:" + gameImages[0] + "");
-			Image gp2 = new Image("File:" + gameImages[1] + "");
-			Image gp3 = new Image("File:" + gameImages[2] + "");
-			this.gamePiece_1.setImage(gp1);
-			this.gamePiece_2.setImage(gp2);
-			this.gamePiece_3.setImage(gp3);
-
-			gamePiece_1.setOnMousePressed(imageOnMousePressedEventHandler);
-			gamePiece_1.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-			gamePiece_1.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-			gamePiece_2.setOnMousePressed(imageOnMousePressedEventHandler);
-			gamePiece_2.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-			gamePiece_2.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-			gamePiece_3.setOnMousePressed(imageOnMousePressedEventHandler);
-			gamePiece_3.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-			gamePiece_3.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-
-		}
+	}
+	
+	private String readFile(String filename) {
+	    String result = "";
+	    try {
+	        BufferedReader br = new BufferedReader(new FileReader(filename));
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+	        while (line != null) {
+	            sb.append(line);
+	            line = br.readLine();
+	        }
+	        result = sb.toString();
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	    }
+	    return result;
 	}
 
 	EventHandler<MouseEvent> imageOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
