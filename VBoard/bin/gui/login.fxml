@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FXMLController">
+	<children>
+		<StackPane fx:id="loginBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" style="-fx-background-color: rgba(0, 0, 0, .15); -fx-border-color: black; -fx-border-width: 1;">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="123.0" valignment="CENTER" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<ImageView fitHeight="123.0" fitWidth="500.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+							<image>
+								<Image url="@vboardlogo.png" />
+							</image>
+							<GridPane.margin>
+								<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+							</GridPane.margin>
+						</ImageView>
+						<Label text="Username:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets right="25.0" />
+							</opaqueInsets>
+							<padding>
+								<Insets right="10.0" />
+							</padding>
+						</Label>
+						<TextField fx:id="userName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#loginLoginButtonAction" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets left="25.0" right="25.0" />
+							</opaqueInsets>
+							<GridPane.margin>
+								<Insets left="10.0" />
+							</GridPane.margin>
+						</TextField>
+						<Label id="welcome-text" text="Login" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+							<font>
+								<Font size="36.0" />
+							</font>
+						</Label>
+						<HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+							<children>
+								<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginConfigureButtonAction" prefWidth="70.0" text="Configure">
+									<HBox.margin>
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+									</HBox.margin>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</Button>
+								<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginLoginButtonAction" prefWidth="70.0" text="Login">
+									<HBox.margin>
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+									</HBox.margin>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</Button>
+							</children>
+						</HBox>
+						<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+							<children>
+								<Button fx:id="loginQuitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginQuitButtonAction" prefWidth="70.0" text="Quit">
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</Button>
+							</children>
+						</HBox>
+						<Text id="loginWarning" fx:id="loginWarning" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+					</children>
+					<opaqueInsets>
+						<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+					</opaqueInsets>
+				</GridPane>
+			</children>
+		</StackPane>
+		<StackPane fx:id="choiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="550.0" style="-fx-background-color: rgba(0, 0, 0, .15); -fx-border-color: black; -fx-border-width: 1;">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="123.0" valignment="CENTER" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<ImageView fitHeight="123.0" fitWidth="500.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+							<image>
+								<Image url="@vboardlogo.png" />
+							</image>
+							<GridPane.margin>
+								<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+							</GridPane.margin>
+						</ImageView>
+						<Label id="welcome-text" text="Create or Join" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+							<font>
+								<Font size="36.0" />
+							</font>
+							<effect>
+								<DropShadow />
+							</effect>
+						</Label>
+						<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#choiceCreateButtonAction" prefWidth="70.0" text="Create" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+						<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#choiceBackButtonAction" prefWidth="70.0" text="Back" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+						<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#choiceJoinButtonAction" prefWidth="70.0" text="Join" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+					</children>
+					<opaqueInsets>
+						<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+					</opaqueInsets>
+				</GridPane>
+			</children>
+		</StackPane>
+		<StackPane fx:id="createBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="550.0" style="-fx-background-color: rgba(0, 0, 0, .15); -fx-border-color: black; -fx-border-width: 1;">
+					<children>
+						<ImageView fitHeight="123.0" fitWidth="500.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+							<image>
+								<Image url="@vboardlogo.png" />
+							</image>
+							<GridPane.margin>
+								<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+							</GridPane.margin>
+						</ImageView>
+						<Label text="Game:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets right="25.0" />
+							</opaqueInsets>
+							<padding>
+								<Insets right="10.0" />
+							</padding>
+						</Label>
+						<Label id="welcome-text" text="Create Game" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+							<font>
+								<Font size="36.0" />
+							</font>
+						</Label>
+						<Text id="loginWarning" fx:id="loginWarning1" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+						<Button fx:id="createStartButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createStartButtonAction" prefWidth="70.0" text="Start" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+						<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createBackButtonAction" prefWidth="70.0" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+							<cursor>
+								<Cursor fx:constant="HAND" />
+							</cursor>
+						</Button>
+						<Label text="Session Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets right="25.0" />
+							</opaqueInsets>
+							<padding>
+								<Insets right="10.0" />
+							</padding>
+						</Label>
+						<Label text="Max Players:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets right="25.0" />
+							</opaqueInsets>
+							<padding>
+								<Insets right="10.0" />
+							</padding>
+						</Label>
+						<Label text="Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets right="25.0" />
+							</opaqueInsets>
+							<padding>
+								<Insets right="10.0" />
+							</padding>
+						</Label>
+						<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+							<children>
+								<CheckBox fx:id="createPasswordBox" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="17.0" prefWidth="76.0" text="Password" textFill="WHITE">
+									<opaqueInsets>
+										<Insets left="10.0" />
+									</opaqueInsets>
+								</CheckBox>
+								<TextField fx:id="createPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="140.0">
+									<HBox.margin>
+										<Insets left="5.0" />
+									</HBox.margin>
+								</TextField>
+							</children>
+							<opaqueInsets>
+								<Insets left="10.0" />
+							</opaqueInsets>
+						</HBox>
+						<TextField fx:id="createSessionName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+						<ChoiceBox fx:id="createMaxPlayers" prefHeight="25.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+
+						</ChoiceBox>
+						<ChoiceBox fx:id="createGame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="160.0" style="-fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+
+					</children>
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+					</columnConstraints>
+					<opaqueInsets>
+						<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+					</opaqueInsets>
+					<rowConstraints>
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="123.0" valignment="CENTER" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+				</GridPane>
+			</children>
+		</StackPane>
+		<StackPane fx:id="configureBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" style="-fx-background-color: rgba(0, 0, 0, .15); -fx-border-color: black; -fx-border-width: 1;">
+					<children>
+						<ImageView fitHeight="123.0" fitWidth="500.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+							<image>
+								<Image url="@vboardlogo.png" />
+							</image>
+							<GridPane.margin>
+								<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+							</GridPane.margin>
+						</ImageView>
+						<Label text="Host Address:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets right="25.0" />
+							</opaqueInsets>
+							<padding>
+								<Insets right="10.0" />
+							</padding>
+						</Label>
+						<TextField fx:id="configureHostAddress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+							<opaqueInsets>
+								<Insets left="25.0" right="25.0" />
+							</opaqueInsets>
+							<GridPane.margin>
+								<Insets left="10.0" />
+							</GridPane.margin>
+						</TextField>
+						<Label id="welcome-text" text="Configure" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+							<font>
+								<Font size="36.0" />
+							</font>
+						</Label>
+						<HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+						<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+							<children>
+								<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#configureDoneButtonAction" prefWidth="70.0" text="Done">
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</Button>
+							</children>
+						</HBox>
+						<Text id="loginWarning" fx:id="loginWarning2" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+					</children>
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+					</columnConstraints>
+					<opaqueInsets>
+						<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+					</opaqueInsets>
+					<rowConstraints>
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="123.0" valignment="CENTER" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+				</GridPane>
+			</children>
+		</StackPane>
+		<StackPane fx:id="joinBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="550.0" style="-fx-background-color: rgba(0, 0, 0, .15); -fx-border-color: black; -fx-border-width: 1;">
+					<children>
+						<ImageView fitHeight="123.0" fitWidth="500.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+							<image>
+								<Image url="@vboardlogo.png" />
+							</image>
+							<GridPane.margin>
+								<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+							</GridPane.margin>
+						</ImageView>
+						<Label id="welcome-text" text="Join Game" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+							<font>
+								<Font size="36.0" />
+							</font>
+						</Label>
+						<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+							<children>
+								<Button fx:id="loginQuitButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#joinBackButtonAction" prefWidth="70.0" text="Back">
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+									<HBox.margin>
+										<Insets right="80.0" />
+									</HBox.margin>
+								</Button>
+								<Label text="Password:">
+									<opaqueInsets>
+										<Insets right="25.0" />
+									</opaqueInsets>
+									<padding>
+										<Insets right="5.0" />
+									</padding>
+								</Label>
+								<TextField fx:id="joinPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="160.0">
+									<opaqueInsets>
+										<Insets left="25.0" right="25.0" />
+									</opaqueInsets>
+								</TextField>
+								<Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#joinJoinButtonAction" prefWidth="70.0" text="Join">
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+									<HBox.margin>
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+									</HBox.margin>
+								</Button>
+							</children>
+						</HBox>
+						<TableView fx:id="joinTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="530.0" style="-fx-background-color: black;" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+					</children>
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="275.0" />
+					</columnConstraints>
+					<opaqueInsets>
+						<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+					</opaqueInsets>
+					<rowConstraints>
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="123.0" valignment="CENTER" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+				</GridPane>
+			</children>
+		</StackPane>
+      <HBox fx:id="gameBox" prefHeight="660.0" prefWidth="550.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="250.0" style="-fx-background-color: black;">
+					<children>
+                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0">
+                     <children>
+                        <TextArea fx:id="gameTextArea" editable="false" prefHeight="300.0" style="-fx-border-color: black; -fx-border-width: 2.5;" wrapText="true">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </TextArea>
+      												<HBox prefHeight="100.0" prefWidth="250.0" spacing="10.0">
+      													<children>
+      														<TextField fx:id="gameChatField" onAction="#gameSendButtonAction" prefHeight="25.0" prefWidth="187.0" />
+      														<Button mnemonicParsing="false" onAction="#gameSendButtonAction" text="Send" />
+      													</children>
+      												</HBox>
+                        <Button mnemonicParsing="false" onAction="#gameLeaveGameButtonAction" text="Leave Game" />
+                     </children>
+                  </VBox>
+					</children>
+				</AnchorPane>
+            <AnchorPane prefHeight="660.0" prefWidth="900.0" style="-fx-background-image: url(&quot;redFelt&quot;);">
+               <children>
+                  <ImageView fx:id="mainBoard" fitHeight="150.0" fitWidth="200.0" layoutX="175.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="gamePiece_1" fitHeight="123.0" fitWidth="92.0" layoutX="49.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="gamePiece_2" fitHeight="123.0" fitWidth="92.0" layoutX="49.0" layoutY="416.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="gamePiece_3" fitHeight="123.0" fitWidth="92.0" layoutX="329.0" layoutY="478.0" pickOnBounds="true" preserveRatio="true" />
+               </children></AnchorPane>
+         </children>
+      </HBox>
+	</children>
+</AnchorPane>
