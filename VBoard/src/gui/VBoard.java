@@ -55,5 +55,6 @@ public class VBoard extends Application {
 		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.setFullScreen(true);
 		stage.show();
+		//just to test the master branch
 	}
 }
