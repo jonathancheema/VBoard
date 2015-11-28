@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
-import org.json.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import client.Client;
 import javafx.collections.FXCollections;
@@ -92,10 +94,14 @@ public class FXMLController {
 
 	@FXML
 	protected void loginLoginButtonAction(ActionEvent event) throws IOException {
-		client.setUserName(userName.getText());
-		client.connectToServer();
-		loginBox.setVisible(false);
-		choiceBox.setVisible(true);
+		if (userName.getText().matches("^[a-zA-Z0-9_]+$")) {
+			client.setUserName(userName.getText());
+			client.connectToServer();
+			loginBox.setVisible(false);
+			choiceBox.setVisible(true);
+		} else {
+			loginWarning.setText("Alphanumeric and underscores only.");
+		}
 	}
 
 	@FXML
@@ -155,8 +161,11 @@ public class FXMLController {
 		ObservableList<GameData> gameList = FXCollections.observableArrayList();
 
 		String[] games = client.getGames();
-		for (int x = 0; x < games.length; x++)
-			gameList.add(new GameData(games[x]));
+		for (int x = 0; x < games.length; x++) {
+			String name = games[x].split(":", 6)[2];
+			if (gamesList.contains(name))
+				gameList.add(new GameData(games[x]));
+		}
 		joinTable.setItems(gameList);
 		joinTable.getColumns().addAll(gameIDCol, passwordCol, sessionNameCol, gameCol, playersCol);
 
@@ -216,90 +225,104 @@ public class FXMLController {
 	private TextField createPassword;
 	@FXML
 	private Button createStartButton;
+	@FXML
+	private Text createWarning;
 
 	@FXML
 	protected void createStartButtonAction(ActionEvent event) throws IOException {
-		String gameName = createGame.getValue().replaceAll(" ", "_");
+		String gameName = createGame.getValue();
 		String sessionName = createSessionName.getText();
 		String maxPlayers = createMaxPlayers.getValue();
 		String password = "";
-		if (createPasswordBox.isSelected())
-			password = createPassword.getText();
-		client.createGame(gameName, sessionName, Integer.parseInt(maxPlayers), password);
-		createBox.setVisible(false);
 
-		setUpGamePieces(gameName);
+		if (createGame.getValue() == null) {
+			createWarning.setText("Please pick a game.");
+		} else if (!createGame.getValue().matches("^[a-zA-Z0-9_]+$")) {
+			createWarning.setText("Game name can only contain a-zA-Z0-9_.");
+		} else if (!sessionName.matches("^[a-zA-Z0-9_]+$")) {
+			createWarning.setText("Session name can only contain a-zA-Z0-9_.");
+		} else if (createPasswordBox.isSelected() && !createPassword.getText().matches("^[a-zA-Z0-9_]+$")) {
+			createWarning.setText("Password can only contain a-zA-Z0-9_.");
+		} else {
+			if (createPasswordBox.isSelected())
+				password = createPassword.getText();
+			client.createGame(gameName, sessionName, Integer.parseInt(maxPlayers), password);
+			createBox.setVisible(false);
 
-		gameBox.setVisible(true);
-		thread.start();
+			setUpGamePieces(gameName);
+
+			gameBox.setVisible(true);
+			thread.start();
+		}
 	}
 
 	private void setUpGamePieces(String gameName) {
 		File gameDir = new File("games/" + gameName);
-//		File[] gameFolders = gameDir.listFiles(new FileFilter() {
-//			public boolean accept(File pathname) {
-//				return pathname.isDirectory();
-//			}
-//		});
+		// File[] gameFolders = gameDir.listFiles(new FileFilter() {
+		// public boolean accept(File pathname) {
+		// return pathname.isDirectory();
+		// }
+		// });
 
 		if (gameDir == null) {
 			System.out.println("gameFolders was null");
 		} else {
-			String jsonData = readFile("games/"+gameName+"/loadInstructions.json");
-		    JSONObject jobj = new JSONObject(jsonData);
-		    JSONArray jarr = new JSONArray(jobj.getJSONArray("stack").toString());
-		    System.out.println("board to use: " + jobj.getString("board"));
-		    
-		    String gameImages = jarr.getString(0);
-		    File testDir = new File("games/" + gameName + "/" + gameImages);
-		    String [] images = testDir.list();
-		    for(int i = 0; i < images.length; i++) {
-		        //System.out.println("Stacking: "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
-		        Image temp = new Image("File:games/"+gameName+"/"+gameImages+"/"+images[i]);
-		        ImageView tempImageView = new ImageView(temp);
-		        tempImageView.setId("image_"+i);
-		        tempImageView.setOnMousePressed(imageOnMousePressedEventHandler);
-		        tempImageView.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-		        tempImageView.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-		        this.gameBox.getChildren().add(tempImageView);
-		    }
-	    }
-			
-//			File[] gameImages = gameFolders[1].listFiles();
-//			Image gp1 = new Image("File:" + gameImages[0] + "");
-//			Image gp2 = new Image("File:" + gameImages[1] + "");
-//			Image gp3 = new Image("File:" + gameImages[2] + "");
-//			this.gamePiece_1.setImage(gp1);
-//			this.gamePiece_2.setImage(gp2);
-//			this.gamePiece_3.setImage(gp3);
-//
-//			gamePiece_1.setOnMousePressed(imageOnMousePressedEventHandler);
-//			gamePiece_1.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-//			gamePiece_1.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-//			gamePiece_2.setOnMousePressed(imageOnMousePressedEventHandler);
-//			gamePiece_2.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-//			gamePiece_2.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-//			gamePiece_3.setOnMousePressed(imageOnMousePressedEventHandler);
-//			gamePiece_3.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-//			gamePiece_3.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+			String jsonData = readFile("games/" + gameName + "/loadInstructions.json");
+			JSONObject jobj = new JSONObject(jsonData);
+			JSONArray jarr = new JSONArray(jobj.getJSONArray("stack").toString());
+			System.out.println("board to use: " + jobj.getString("board"));
+
+			String gameImages = jarr.getString(0);
+			File testDir = new File("games/" + gameName + "/" + gameImages);
+			String[] images = testDir.list();
+			for (int i = 0; i < images.length; i++) {
+				// System.out.println("Stacking:
+				// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
+				Image temp = new Image("File:games/" + gameName + "/" + gameImages + "/" + images[i]);
+				ImageView tempImageView = new ImageView(temp);
+				tempImageView.setId("image_" + i);
+				tempImageView.setOnMousePressed(imageOnMousePressedEventHandler);
+				tempImageView.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+				tempImageView.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+				this.gameBox.getChildren().add(tempImageView);
+			}
+		}
+
+		// File[] gameImages = gameFolders[1].listFiles();
+		// Image gp1 = new Image("File:" + gameImages[0] + "");
+		// Image gp2 = new Image("File:" + gameImages[1] + "");
+		// Image gp3 = new Image("File:" + gameImages[2] + "");
+		// this.gamePiece_1.setImage(gp1);
+		// this.gamePiece_2.setImage(gp2);
+		// this.gamePiece_3.setImage(gp3);
+		//
+		// gamePiece_1.setOnMousePressed(imageOnMousePressedEventHandler);
+		// gamePiece_1.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+		// gamePiece_1.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+		// gamePiece_2.setOnMousePressed(imageOnMousePressedEventHandler);
+		// gamePiece_2.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+		// gamePiece_2.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+		// gamePiece_3.setOnMousePressed(imageOnMousePressedEventHandler);
+		// gamePiece_3.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+		// gamePiece_3.setOnMouseDragged(imageOnMouseDraggedEventHandler);
 
 	}
-	
+
 	private String readFile(String filename) {
-	    String result = "";
-	    try {
-	        BufferedReader br = new BufferedReader(new FileReader(filename));
-	        StringBuilder sb = new StringBuilder();
-	        String line = br.readLine();
-	        while (line != null) {
-	            sb.append(line);
-	            line = br.readLine();
-	        }
-	        result = sb.toString();
-	    } catch(Exception e) {
-	        e.printStackTrace();
-	    }
-	    return result;
+		String result = "";
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(filename));
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+			while (line != null) {
+				sb.append(line);
+				line = br.readLine();
+			}
+			result = sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	EventHandler<MouseEvent> imageOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
@@ -343,19 +366,27 @@ public class FXMLController {
 
 	@FXML
 	private TextField joinPassword;
+	@FXML
+	private Text joinWarning;
 
 	@FXML
 	protected void joinJoinButtonAction(ActionEvent event) throws IOException {
-		String password = joinPassword.getText();
-		GameData gameData = joinTable.getSelectionModel().getSelectedItem();
-		int gameID = Integer.parseInt(gameData.getGameID());
-		if (gameData.getPassword().equals("false"))
-			password = "";
-		if (client.joinGame(gameID, password) >= 0) {
-			joinBox.setVisible(false);
-			setUpGamePieces(gameData.getGame().toString());
-			gameBox.setVisible(true);
-			thread.start();
+		if (joinTable.getSelectionModel().getSelectedItem() != null) {
+			String password = joinPassword.getText();
+			GameData gameData = joinTable.getSelectionModel().getSelectedItem();
+			int gameID = Integer.parseInt(gameData.getGameID());
+			if (gameData.getPassword().equals("false"))
+				password = "";
+			if (client.joinGame(gameID, password) >= 0) {
+				joinBox.setVisible(false);
+				setUpGamePieces(gameData.getGame().toString());
+				gameBox.setVisible(true);
+				thread.start();
+			} else {
+				joinWarning.setText("Incorrect password.");
+			}
+		} else {
+			joinWarning.setText("Select a game to join.");
 		}
 	}
 
@@ -399,6 +430,8 @@ public class FXMLController {
 		choiceBox.setVisible(true);
 	}
 
+	private ObservableList<String> gamesList = null;
+
 	@FXML
 	private void initialize() throws IOException, InterruptedException {
 		client = new Client();
@@ -408,7 +441,7 @@ public class FXMLController {
 
 		thread = new ServerHandler();
 
-		ObservableList<String> gamesList = FXCollections.observableArrayList();
+		gamesList = FXCollections.observableArrayList();
 		File dir = new File("games");
 
 		File[] subDirs = dir.listFiles(new FileFilter() {
