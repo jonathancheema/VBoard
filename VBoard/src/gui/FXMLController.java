@@ -402,6 +402,7 @@ public class FXMLController {
 				setUpGamePieces(gameData.getGame().toString());
 				gameBox.setVisible(true);
 				thread.start();
+				client.getBoard();
 			} else {
 				joinWarning.setText("Incorrect password.");
 			}
@@ -430,6 +431,36 @@ public class FXMLController {
 	protected void gameSendButtonAction(ActionEvent event) throws IOException {
 		client.messageGame(gameChatField.getText());
 		gameChatField.setText("");
+	}
+
+	@FXML
+	private Button gameMyHand;
+
+	private Boolean showingBoard = true;
+
+	@FXML
+	protected void gameMyHandButtonAction(ActionEvent even) throws IOException {
+		if (showingBoard == true) {
+			showingBoard = false;
+			gameMyHand.setText("Game Board");
+			for (Node child : gameTable.getChildren()) {
+				Piece aChild = (Piece) child;
+				if (aChild.getOwner().equals(client.getUserName()))
+					aChild.setVisible(true);
+				else
+					aChild.setVisible(false);
+			}
+		} else {
+			showingBoard = true;
+			gameMyHand.setText("My Hand");
+			for (Node child : gameTable.getChildren()) {
+				Piece aChild = (Piece) child;
+				if (aChild.getOwner().equals("table!"))
+					aChild.setVisible(true);
+				else
+					aChild.setVisible(false);
+			}
+		}
 	}
 
 	@FXML
@@ -492,17 +523,23 @@ public class FXMLController {
 				String response;
 				while (running) {
 					response = client.getNext();
-					String[] data = response.split(":", 3);
-					String userName = data[0];
-					int type = Integer.parseInt(data[1]);
-					String message = data[2];
-					if (type == 3) {
-						gameUpdateChat(userName + ": " + message);
-					} else if (type == 4) {
-						String[] coordinates = message.split(":", 3);
+					if (response.equals("GETBOARD")) {
+						for (Node child : gameTable.getChildren()) {
+							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY());
+						}
+					} else {
+						String[] data = response.split(":", 3);
+						String userName = data[0];
+						int type = Integer.parseInt(data[1]);
+						String message = data[2];
+						if (type == 3) {
+							gameUpdateChat(userName + ": " + message);
+						} else if (type == 4) {
+							String[] coordinates = message.split(":", 3);
 
-						gameBox.lookup("#" + coordinates[0].toString()).setTranslateX(Double.parseDouble(coordinates[1]));
-						gameBox.lookup("#" + coordinates[0].toString()).setTranslateY(Double.parseDouble(coordinates[2]));
+							gameBox.lookup("#" + coordinates[0].toString()).setTranslateX(Double.parseDouble(coordinates[1]));
+							gameBox.lookup("#" + coordinates[0].toString()).setTranslateY(Double.parseDouble(coordinates[2]));
+						}
 					}
 				}
 			} catch (Exception e) {

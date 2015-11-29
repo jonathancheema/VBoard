@@ -14,6 +14,7 @@ class Player extends Thread {
 	private static final int LEAVE = 2;
 	private static final int MESSAGE = 3;
 	private static final int MOVE = 4;
+	private static final int GETBOARD = 5;
 
 	private Socket socket;
 	private BufferedReader in;
@@ -74,6 +75,10 @@ class Player extends Thread {
 					messageGame(gameID, playerName, mType, message[3]);
 				else if (mType == MOVE)
 					moveGame(gameID, playerName, mType, message[3]);
+				else if (mType == GETBOARD) {
+					System.out.println("Getting Board!!!");
+					getBoard(gameID, playerName);
+				}
 			}
 		}
 	}
@@ -102,6 +107,10 @@ class Player extends Thread {
 
 	private void moveGame(int gameID, String playerName, int mType, String message) {
 		Server.games[gameID].sendMove(playerName, mType, message);
+	}
+
+	private void getBoard(int gameID, String playerName) {
+		Server.games[gameID].getBoard(playerName);
 	}
 
 	// message: playerName

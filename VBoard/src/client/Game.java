@@ -46,12 +46,12 @@ public class Game {
 			boolean joined = false;
 			while (joined == false && x < maxPlayers) {
 				if (players[x][0] == null) {
+					sendMessage("Server:" + "3:" + playerName + " has joined this game.");
 					joined = true;
 					players[x][0] = playerName;
 					players[x][1] = player;
 					currentPlayers++;
 					player.toPlayer(gameID + "");
-					sendMessage("Server:" + "3:" + playerName + " has joined this game.");
 				}
 				x++;
 			}
@@ -102,5 +102,12 @@ public class Game {
 			return false;
 		else
 			return true;
+	}
+
+	public void getBoard(String playerName) {
+		for (int x = 0; x < maxPlayers; x++) {
+			if (!players[x][0].equals(playerName))
+				((Player) players[x][1]).toPlayer("GETBOARD");
+		}
 	}
 }

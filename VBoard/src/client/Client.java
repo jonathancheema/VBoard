@@ -13,6 +13,7 @@ public class Client {
 	private static final int LEAVE = 2;
 	private static final int MESSAGE = 3;
 	private static final int MOVE = 4;
+	private static final int GETBOARD = 5;
 
 	private static BufferedReader in;
 	private static PrintWriter out;
@@ -98,6 +99,10 @@ public class Client {
 
 	public String getNext() throws IOException {
 		return in.readLine();
+	}
+
+	public void getBoard() throws IOException {
+		out.println(gameID + ":" + userName + ":" + GETBOARD + ":BLANK");
 	}
 
 	public void setGameID(int i) {
