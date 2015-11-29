@@ -2,13 +2,13 @@ package gui;
 
 import javafx.scene.image.Image;
 
-public class Card extends javafx.scene.image.ImageView {
+public class Piece extends javafx.scene.image.ImageView {
 
 	private Image backImage;
 	private Image faceImage;
 	private boolean faceUp = false;
 	
-	public Card (String faceImageLoc, String backImageLoc) {
+	public Piece (String faceImageLoc, String backImageLoc) {
 		backImage = new Image(backImageLoc);
 		faceImage = new Image(faceImageLoc);
 		this.setImage(backImage);

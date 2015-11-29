@@ -25,7 +25,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -273,26 +272,8 @@ public class FXMLController {
 			createImageViews(gameName, folderName, backImageName, 20, 20);
 		}
 
-		// File[] gameImages = gameFolders[1].listFiles();
-		// Image gp1 = new Image("File:" + gameImages[0] + "");
-		// Image gp2 = new Image("File:" + gameImages[1] + "");
-		// Image gp3 = new Image("File:" + gameImages[2] + "");
-		// this.gamePiece_1.setImage(gp1);
-		// this.gamePiece_2.setImage(gp2);
-		// this.gamePiece_3.setImage(gp3);
-		//
-		// gamePiece_1.setOnMousePressed(imageOnMousePressedEventHandler);
-		// gamePiece_1.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-		// gamePiece_1.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-		// gamePiece_2.setOnMousePressed(imageOnMousePressedEventHandler);
-		// gamePiece_2.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-		// gamePiece_2.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-		// gamePiece_3.setOnMousePressed(imageOnMousePressedEventHandler);
-		// gamePiece_3.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-		// gamePiece_3.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-
 	}
-	
+
 	private void createImageViews(String gameName, String folderName, String backImageName, double xPos, double yPos) {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
@@ -300,11 +281,11 @@ public class FXMLController {
 		for (int i = 0; i < images.length; i++) {
 			// System.out.println("Stacking:
 			// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
-			if(images[i].toString().compareTo(backImageName) != 0) {
+			if (images[i].toString().compareTo(backImageName) != 0) {
 				String faceLoc = "File:games/" + gameName + "/" + folderName + "/" + images[i];
-				
-				Card currentPiece = new Card(faceLoc, backLoc);
-				
+
+				Piece currentPiece = new Piece(faceLoc, backLoc);
+
 				currentPiece.setId("image_" + i);
 				currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
 				currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
@@ -333,12 +314,12 @@ public class FXMLController {
 		}
 		return result;
 	}
-	
+
 	EventHandler<MouseEvent> imageOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
 			if (t.getClickCount() == 2) {
-				((Card) (t.getSource())).flipImage();
+				((Piece) (t.getSource())).flipImage();
 			}
 		}
 	};
@@ -444,6 +425,8 @@ public class FXMLController {
 		client.setGameID(-1);
 		thread = new ServerHandler();
 
+		gameTextArea.clear();
+		gameChatField.clear();
 		gameTable.getChildren().clear();
 		gameBox.setVisible(false);
 		choiceBox.setVisible(true);

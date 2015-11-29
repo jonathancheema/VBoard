@@ -47,7 +47,7 @@ public class VBoard extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("VBoard.fxml"));
 
 		stage.setTitle("Virtual Board");
 		stage.setScene(new Scene(root));
