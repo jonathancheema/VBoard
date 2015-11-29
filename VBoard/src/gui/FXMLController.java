@@ -347,6 +347,8 @@ public class FXMLController {
 		}
 	};
 
+	int moveCount = 0;
+	
 	EventHandler<MouseEvent> imageOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
@@ -354,9 +356,17 @@ public class FXMLController {
 			double offsetY = t.getSceneY() - orgSceneY;
 			double newTranslateX = orgTranslateX + offsetX;
 			double newTranslateY = orgTranslateY + offsetY;
-			// String pieceID = ((Node) t.getSource()).getId();
+			String pieceID = ((Node) t.getSource()).getId();
 			((Node) (t.getSource())).setTranslateX(newTranslateX);
 			((Node) (t.getSource())).setTranslateY(newTranslateY);
+			
+			// METHOD TO SEND COORDINATES TO SERVER HERE.
+			if(moveCount == 5) {
+				client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY);
+				moveCount = 0;
+			} else 
+				moveCount++;
+			
 		}
 	};
 
