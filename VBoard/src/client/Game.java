@@ -10,7 +10,8 @@ public class Game {
 	private String password;
 	private Object players[][];
 
-	public Game(int gameID, String host, String gameTitle, String sessionName, int maxPlayers, String password, Player player) {
+	public Game(int gameID, String host, String gameTitle, String sessionName, int maxPlayers, String password,
+			Player player) {
 		this.gameID = gameID;
 		this.host = host;
 		this.gameTitle = gameTitle;
@@ -110,4 +111,9 @@ public class Game {
 				((Player) players[x][1]).toPlayer("GETBOARD");
 		}
 	}
+
+	public String getHost() {
+		return host;
+	}
+
 }

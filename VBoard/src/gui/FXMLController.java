@@ -323,9 +323,12 @@ public class FXMLController {
 				line = br.readLine();
 			}
 			result = sb.toString();
+			
+			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return result;
 	}
 
