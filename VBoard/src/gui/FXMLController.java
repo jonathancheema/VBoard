@@ -79,8 +79,8 @@ public class FXMLController {
 	@FXML
 	private ImageView gamePiece_3;
 
-	double orgSceneX, orgSceneY, orgSceneZ;
-	double orgTranslateX, orgTranslateY, orgTranslateZ;
+	double orgSceneX, orgSceneY;
+	double orgTranslateX, orgTranslateY;
 
 	@FXML
 	protected void loginQuitButtonAction(ActionEvent event) {
@@ -323,12 +323,12 @@ public class FXMLController {
 				line = br.readLine();
 			}
 			result = sb.toString();
-			
+
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
@@ -349,10 +349,8 @@ public class FXMLController {
 			((Piece) t.getSource()).toFront();
 			orgSceneX = t.getSceneX();
 			orgSceneY = t.getSceneY();
-			orgSceneZ = t.getZ();
 			orgTranslateX = ((Node) (t.getSource())).getTranslateX();
 			orgTranslateY = ((Node) (t.getSource())).getTranslateY();
-			orgTranslateZ = ((Node) (t.getSource())).getTranslateZ();
 		}
 	};
 
@@ -377,19 +375,16 @@ public class FXMLController {
 	private void sendTranslate(MouseEvent t, boolean sendMessage) {
 		double offsetX = t.getSceneX() - orgSceneX;
 		double offsetY = t.getSceneY() - orgSceneY;
-		double offsetZ = t.getZ() - orgSceneZ;
 		double newTranslateX = orgTranslateX + offsetX;
 		double newTranslateY = orgTranslateY + offsetY;
-		double newTranslateZ = orgTranslateZ + offsetZ;
 		String pieceID = ((Node) t.getSource()).getId();
 		((Node) (t.getSource())).setTranslateX(newTranslateX);
 		((Node) (t.getSource())).setTranslateY(newTranslateY);
-		((Node) (t.getSource())).setTranslateZ(newTranslateZ);
 
 		// Moves the Piece
 		if (sendMessage)
-			client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + newTranslateZ + ":"
-					+ ((Piece) (t.getSource())).isFaceUp());
+			client.moveGame(
+					pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + ((Piece) (t.getSource())).isFaceUp());
 	}
 
 	@FXML
@@ -534,7 +529,7 @@ public class FXMLController {
 					if (response.equals("GETBOARD")) {
 						for (Node child : gameTable.getChildren())
 							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY()
-									+ ":" + child.getTranslateZ() + ":" + ((Piece) child).isFaceUp());
+									+ ":" + ((Piece) child).isFaceUp());
 					} else {
 						String[] data = response.split(":", 3);
 						String userName = data[0];
@@ -543,17 +538,15 @@ public class FXMLController {
 						if (type == 3) {
 							gameUpdateChat(userName + ": " + message);
 						} else if (type == 4) {
-							String[] coordinates = message.split(":", 5);
+							String[] coordinates = message.split(":", 4);
 
 							gameBox.lookup("#" + coordinates[0].toString())
 									.setTranslateX(Double.parseDouble(coordinates[1]));
 							gameBox.lookup("#" + coordinates[0].toString())
 									.setTranslateY(Double.parseDouble(coordinates[2]));
-							gameBox.lookup("#" + coordinates[0].toString())
-									.setTranslateZ(Double.parseDouble(coordinates[3]));
 
 							if (((Piece) gameBox.lookup("#" + coordinates[0].toString())).isFaceUp() != Boolean
-									.parseBoolean(coordinates[4]))
+									.parseBoolean(coordinates[3]))
 								((Piece) gameBox.lookup("#" + coordinates[0].toString())).flipImage();
 						}
 					}
