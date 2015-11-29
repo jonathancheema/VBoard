@@ -6,6 +6,10 @@ root {
      -fx-background-image: url("redfelt.jpg");
 }
 
+.sidePanel {
+	-fx-background-image: url("wood.jpg");
+}
+
 .label {
     -fx-font-size: 12.0px;
     -fx-font-weight: bold;

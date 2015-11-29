@@ -70,7 +70,10 @@ public class Game {
 					currentPlayers--;
 				}
 		}
-		sendMessage("Server:" + "3:" + message + " has left this game.");
+		if (currentPlayers == 0)
+			Server.deleteGame(gameID);
+		else
+			sendMessage("Server:" + "3:" + message + " has left this game.");
 
 	}
 

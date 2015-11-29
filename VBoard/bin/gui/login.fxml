@@ -384,18 +384,21 @@
 		</StackPane>
       <HBox fx:id="gameBox" prefHeight="660.0" prefWidth="550.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="250.0" style="-fx-background-image: url(&quot;wood&quot;);">
+				<AnchorPane minWidth="250.0" prefWidth="250.0" styleClass="sidePanel">
 					<children>
-                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0">
                      <children>
-                        <TextArea fx:id="gameTextArea" editable="false" prefHeight="300.0" style="-fx-border-color: black; -fx-border-width: 2.5;" wrapText="true">
+                        <TextArea fx:id="gameTextArea" editable="false" maxWidth="-Infinity" prefHeight="300.0" prefWidth="240.0" style="-fx-border-color: black; -fx-border-width: 1.5;" wrapText="true">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </TextArea>
-      												<HBox prefHeight="100.0" prefWidth="250.0" spacing="10.0">
+      												<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="236.0" spacing="10.0">
       													<children>
-      														<TextField fx:id="gameChatField" onAction="#gameSendButtonAction" prefHeight="25.0" prefWidth="187.0" />
+      														<TextField fx:id="gameChatField" onAction="#gameSendButtonAction" prefHeight="25.0" prefWidth="176.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin></TextField>
       														<Button mnemonicParsing="false" onAction="#gameSendButtonAction" text="Send" />
       													</children>
       												</HBox>
@@ -404,13 +407,7 @@
                   </VBox>
 					</children>
 				</AnchorPane>
-            <AnchorPane fx:id="gameTable" prefHeight="660.0" prefWidth="900.0" style="-fx-background-image: url(&quot;redFelt&quot;);">
-               <children>
-                  <ImageView fx:id="mainBoard" fitHeight="150.0" fitWidth="200.0" layoutX="175.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="gamePiece_1" fitHeight="123.0" fitWidth="92.0" layoutX="49.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="gamePiece_2" fitHeight="123.0" fitWidth="92.0" layoutX="49.0" layoutY="416.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="gamePiece_3" fitHeight="123.0" fitWidth="92.0" layoutX="329.0" layoutY="478.0" pickOnBounds="true" preserveRatio="true" />
-               </children></AnchorPane>
+            <AnchorPane fx:id="gameTable" prefHeight="660.0" prefWidth="900.0" />
          </children>
       </HBox>
 	</children>

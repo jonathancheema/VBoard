@@ -444,6 +444,7 @@ public class FXMLController {
 		client.setGameID(-1);
 		thread = new ServerHandler();
 
+		gameTable.getChildren().clear();
 		gameBox.setVisible(false);
 		choiceBox.setVisible(true);
 	}
