@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -266,18 +268,37 @@ public class FXMLController {
 		System.out.println("board to use: " + jobj.getString("board"));
 
 		for (int stackIndex = 0; stackIndex < stackFolders.length(); stackIndex++) {
-			String[] halves = stackFolders.getString(stackIndex).split(":");
-			String folderName = halves[0];
-			String backImageName = halves[1];
-			createImageViews(gameName, folderName, backImageName, 20, 20);
+			JSONObject folderObj = stackFolders.getJSONObject(stackIndex);
+			String folderName = JSONObject.getNames(folderObj)[0];
+			JSONArray folderArray = new JSONArray(folderObj.getJSONArray(folderName).toString());
+			
+			String backImageName = (String) ((JSONObject) folderArray.get(0)).getString("backImage");
+			boolean shuffle = (boolean) ((JSONObject) folderArray.get(1)).getBoolean("shuffle");
+			double xPos = (double) ((JSONObject) folderArray.get(2)).getDouble("xPos");
+			double yPos = (double) ((JSONObject) folderArray.get(3)).getDouble("yPos");
+			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos);
 		}
 
 	}
 
-	private void createImageViews(String gameName, String folderName, String backImageName, double xPos, double yPos) {
+	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos) {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
 		String[] images = imageDir.list();
+		
+		if (shuffle == true) {
+			    // If running on Java 6 or older, use `new Random()` on RHS here
+			    Random rnd = ThreadLocalRandom.current();
+			    for (int i = images.length - 1; i > 0; i--)
+			    {
+			      int index = rnd.nextInt(i + 1);
+			      // Simple swap
+			      String tempImageLoc = images[index];
+			      images[index] = images[i];
+			      images[i] = tempImageLoc;
+			    }
+		}
+		
 		for (int i = 0; i < images.length; i++) {
 			// System.out.println("Stacking:
 			// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);

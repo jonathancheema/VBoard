@@ -1,6 +1,12 @@
 {
 	"board": "none",
 	"stack": [
-		"pieces:b1fv.png"
+		{	"pieces":[ 
+				{"backImage": "b1fv.png"},
+				{"shuffle": true },
+				{"xPos": 20},
+				{"yPos": 20}
+			]
+		}
 	]
 }
