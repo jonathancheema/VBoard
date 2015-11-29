@@ -280,7 +280,8 @@ public class FXMLController {
 
 	}
 
-	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos) {
+	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle,
+			double xPos, double yPos) {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
 		String[] images = imageDir.list();
@@ -303,11 +304,11 @@ public class FXMLController {
 				pieces.add(currentPiece);
 			}
 		}
-		if (shuffle == true) {			
+		if (shuffle == true) {
 			Collections.shuffle(pieces);
 		}
 
-		for(ImageView piece : pieces)
+		for (ImageView piece : pieces)
 			this.gameTable.getChildren().add(piece);
 	}
 
@@ -347,8 +348,6 @@ public class FXMLController {
 		}
 	};
 
-	int moveCount = 0;
-	
 	EventHandler<MouseEvent> imageOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
@@ -359,14 +358,15 @@ public class FXMLController {
 			String pieceID = ((Node) t.getSource()).getId();
 			((Node) (t.getSource())).setTranslateX(newTranslateX);
 			((Node) (t.getSource())).setTranslateY(newTranslateY);
-			
-			// METHOD TO SEND COORDINATES TO SERVER HERE.
-			if(moveCount == 5) {
-				client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY);
-				moveCount = 0;
-			} else 
-				moveCount++;
-			
+
+			// METHOD FOR FLUID MOVEMENT. Causes problems
+			// if(moveCount == 5) {
+			// client.moveGame(pieceID + ":" + newTranslateX + ":" +
+			// newTranslateY);
+			// moveCount = 0;
+			// } else
+			// moveCount++;
+
 		}
 	};
 
@@ -538,8 +538,10 @@ public class FXMLController {
 						} else if (type == 4) {
 							String[] coordinates = message.split(":", 3);
 
-							gameBox.lookup("#" + coordinates[0].toString()).setTranslateX(Double.parseDouble(coordinates[1]));
-							gameBox.lookup("#" + coordinates[0].toString()).setTranslateY(Double.parseDouble(coordinates[2]));
+							gameBox.lookup("#" + coordinates[0].toString())
+									.setTranslateX(Double.parseDouble(coordinates[1]));
+							gameBox.lookup("#" + coordinates[0].toString())
+									.setTranslateY(Double.parseDouble(coordinates[2]));
 						}
 					}
 				}
