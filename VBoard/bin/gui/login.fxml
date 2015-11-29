@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FXMLController">
+<AnchorPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FXMLController">
 	<children>
 		<StackPane fx:id="loginBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
@@ -384,7 +384,7 @@
 		</StackPane>
       <HBox fx:id="gameBox" prefHeight="660.0" prefWidth="550.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="250.0" style="-fx-background-color: black;">
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="250.0" style="-fx-background-image: url(&quot;wood&quot;);">
 					<children>
                   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0">
                      <children>
@@ -404,7 +404,7 @@
                   </VBox>
 					</children>
 				</AnchorPane>
-            <AnchorPane prefHeight="660.0" prefWidth="900.0" style="-fx-background-image: url(&quot;redFelt&quot;);">
+            <AnchorPane fx:id="gameTable" prefHeight="660.0" prefWidth="900.0" style="-fx-background-image: url(&quot;redFelt&quot;);">
                <children>
                   <ImageView fx:id="mainBoard" fitHeight="150.0" fitWidth="200.0" layoutX="175.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="gamePiece_1" fitHeight="123.0" fitWidth="92.0" layoutX="49.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />

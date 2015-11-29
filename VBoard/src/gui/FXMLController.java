@@ -28,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -256,6 +257,9 @@ public class FXMLController {
 		}
 	}
 
+	@FXML
+	private AnchorPane gameTable;
+
 	private void setUpGamePieces(String gameName) {
 		File gameDir = new File("games/" + gameName);
 		// File[] gameFolders = gameDir.listFiles(new FileFilter() {
@@ -273,8 +277,8 @@ public class FXMLController {
 			System.out.println("board to use: " + jobj.getString("board"));
 
 			String gameImages = jarr.getString(0);
-			File testDir = new File("games/" + gameName + "/" + gameImages);
-			String[] images = testDir.list();
+			File imageDir = new File("games/" + gameName + "/" + gameImages);
+			String[] images = imageDir.list();
 			for (int i = 0; i < images.length; i++) {
 				// System.out.println("Stacking:
 				// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
@@ -284,7 +288,9 @@ public class FXMLController {
 				tempImageView.setOnMousePressed(imageOnMousePressedEventHandler);
 				tempImageView.setOnMouseReleased(imageOnMouseReleasedEventHandler);
 				tempImageView.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-				this.gameBox.getChildren().add(tempImageView);
+				this.gameTable.getChildren().add(tempImageView);
+				tempImageView.setLayoutX(20);
+				tempImageView.setLayoutY(20);
 			}
 		}
 
