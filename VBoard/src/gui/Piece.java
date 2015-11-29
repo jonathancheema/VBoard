@@ -33,4 +33,8 @@ public class Piece extends javafx.scene.image.ImageView {
 		this.owner = owner;
 	}
 
+	public boolean isFaceUp() {
+		return faceUp;
+	}
+
 }
