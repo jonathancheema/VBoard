@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -265,13 +265,12 @@ public class FXMLController {
 		String jsonData = readFile("games/" + gameName + "/loadInstructions.json");
 		JSONObject jobj = new JSONObject(jsonData);
 		JSONArray stackFolders = new JSONArray(jobj.getJSONArray("stack").toString());
-		System.out.println("board to use: " + jobj.getString("board"));
 
 		for (int stackIndex = 0; stackIndex < stackFolders.length(); stackIndex++) {
 			JSONObject folderObj = stackFolders.getJSONObject(stackIndex);
 			String folderName = JSONObject.getNames(folderObj)[0];
 			JSONArray folderArray = new JSONArray(folderObj.getJSONArray(folderName).toString());
-			
+
 			String backImageName = (String) ((JSONObject) folderArray.get(0)).getString("backImage");
 			boolean shuffle = (boolean) ((JSONObject) folderArray.get(1)).getBoolean("shuffle");
 			double xPos = (double) ((JSONObject) folderArray.get(2)).getDouble("xPos");
@@ -285,23 +284,10 @@ public class FXMLController {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
 		String[] images = imageDir.list();
-		
-		if (shuffle == true) {
-			    // If running on Java 6 or older, use `new Random()` on RHS here
-			    Random rnd = ThreadLocalRandom.current();
-			    for (int i = images.length - 1; i > 0; i--)
-			    {
-			      int index = rnd.nextInt(i + 1);
-			      // Simple swap
-			      String tempImageLoc = images[index];
-			      images[index] = images[i];
-			      images[i] = tempImageLoc;
-			    }
-		}
-		
+		ArrayList<ImageView> pieces = new ArrayList<ImageView>();
+
 		for (int i = 0; i < images.length; i++) {
-			// System.out.println("Stacking:
-			// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
+
 			if (images[i].toString().compareTo(backImageName) != 0) {
 				String faceLoc = "File:games/" + gameName + "/" + folderName + "/" + images[i];
 
@@ -312,11 +298,17 @@ public class FXMLController {
 				currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
 				currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
 				currentPiece.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-				this.gameTable.getChildren().add(currentPiece);
 				currentPiece.setLayoutX(xPos);
 				currentPiece.setLayoutY(yPos);
+				pieces.add(currentPiece);
 			}
 		}
+		if (shuffle == true) {			
+			Collections.shuffle(pieces);
+		}
+
+		for(ImageView piece : pieces)
+			this.gameTable.getChildren().add(piece);
 	}
 
 	private String readFile(String filename) {
@@ -524,9 +516,8 @@ public class FXMLController {
 				while (running) {
 					response = client.getNext();
 					if (response.equals("GETBOARD")) {
-						for (Node child : gameTable.getChildren()) {
+						for (Node child : gameTable.getChildren())
 							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY());
-						}
 					} else {
 						String[] data = response.split(":", 3);
 						String userName = data[0];

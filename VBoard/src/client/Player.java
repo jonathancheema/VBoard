@@ -76,7 +76,6 @@ class Player extends Thread {
 				else if (mType == MOVE)
 					moveGame(gameID, playerName, mType, message[3]);
 				else if (mType == GETBOARD) {
-					System.out.println("Getting Board!!!");
 					getBoard(gameID, playerName);
 				}
 			}
