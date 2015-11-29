@@ -261,37 +261,16 @@ public class FXMLController {
 	private AnchorPane gameTable;
 
 	private void setUpGamePieces(String gameName) {
-		File gameDir = new File("games/" + gameName);
-		// File[] gameFolders = gameDir.listFiles(new FileFilter() {
-		// public boolean accept(File pathname) {
-		// return pathname.isDirectory();
-		// }
-		// });
+		String jsonData = readFile("games/" + gameName + "/loadInstructions.json");
+		JSONObject jobj = new JSONObject(jsonData);
+		JSONArray stackFolders = new JSONArray(jobj.getJSONArray("stack").toString());
+		System.out.println("board to use: " + jobj.getString("board"));
 
-		if (gameDir == null) {
-			System.out.println("gameFolders was null");
-		} else {
-			String jsonData = readFile("games/" + gameName + "/loadInstructions.json");
-			JSONObject jobj = new JSONObject(jsonData);
-			JSONArray jarr = new JSONArray(jobj.getJSONArray("stack").toString());
-			System.out.println("board to use: " + jobj.getString("board"));
-
-			String gameImages = jarr.getString(0);
-			File imageDir = new File("games/" + gameName + "/" + gameImages);
-			String[] images = imageDir.list();
-			for (int i = 0; i < images.length; i++) {
-				// System.out.println("Stacking:
-				// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
-				Image temp = new Image("File:games/" + gameName + "/" + gameImages + "/" + images[i]);
-				ImageView tempImageView = new ImageView(temp);
-				tempImageView.setId("image_" + i);
-				tempImageView.setOnMousePressed(imageOnMousePressedEventHandler);
-				tempImageView.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-				tempImageView.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-				this.gameTable.getChildren().add(tempImageView);
-				tempImageView.setLayoutX(20);
-				tempImageView.setLayoutY(20);
-			}
+		for (int stackIndex = 0; stackIndex < stackFolders.length(); stackIndex++) {
+			String[] halves = stackFolders.getString(stackIndex).split(":");
+			String folderName = halves[0];
+			String backImageName = halves[1];
+			createImageViews(gameName, folderName, backImageName, 20, 20);
 		}
 
 		// File[] gameImages = gameFolders[1].listFiles();
@@ -313,6 +292,30 @@ public class FXMLController {
 		// gamePiece_3.setOnMouseDragged(imageOnMouseDraggedEventHandler);
 
 	}
+	
+	private void createImageViews(String gameName, String folderName, String backImageName, double xPos, double yPos) {
+		File imageDir = new File("games/" + gameName + "/" + folderName);
+		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
+		String[] images = imageDir.list();
+		for (int i = 0; i < images.length; i++) {
+			// System.out.println("Stacking:
+			// "+"games/"+gameName+"/"+gameImages+"/"+images[i]);
+			if(images[i].toString().compareTo(backImageName) != 0) {
+				String faceLoc = "File:games/" + gameName + "/" + folderName + "/" + images[i];
+				
+				Card currentPiece = new Card(faceLoc, backLoc);
+				
+				currentPiece.setId("image_" + i);
+				currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
+				currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
+				currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+				currentPiece.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+				this.gameTable.getChildren().add(currentPiece);
+				currentPiece.setLayoutX(xPos);
+				currentPiece.setLayoutY(yPos);
+			}
+		}
+	}
 
 	private String readFile(String filename) {
 		String result = "";
@@ -330,6 +333,15 @@ public class FXMLController {
 		}
 		return result;
 	}
+	
+	EventHandler<MouseEvent> imageOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent t) {
+			if (t.getClickCount() == 2) {
+				((Card) (t.getSource())).flipImage();
+			}
+		}
+	};
 
 	EventHandler<MouseEvent> imageOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
