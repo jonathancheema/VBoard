@@ -280,8 +280,7 @@ public class FXMLController {
 
 	}
 
-	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle,
-			double xPos, double yPos) {
+	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos) {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
 		String[] images = imageDir.list();
@@ -383,8 +382,7 @@ public class FXMLController {
 
 		// Moves the Piece
 		if (sendMessage)
-			client.moveGame(
-					pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + ((Piece) (t.getSource())).isFaceUp());
+			client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + ((Piece) (t.getSource())).isFaceUp());
 	}
 
 	@FXML
@@ -528,8 +526,7 @@ public class FXMLController {
 					response = client.getNext();
 					if (response.equals("GETBOARD")) {
 						for (Node child : gameTable.getChildren())
-							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY()
-									+ ":" + ((Piece) child).isFaceUp());
+							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY() + ":" + ((Piece) child).isFaceUp());
 					} else {
 						String[] data = response.split(":", 3);
 						String userName = data[0];
@@ -540,14 +537,12 @@ public class FXMLController {
 						} else if (type == 4) {
 							String[] coordinates = message.split(":", 4);
 
-							gameBox.lookup("#" + coordinates[0].toString())
-									.setTranslateX(Double.parseDouble(coordinates[1]));
-							gameBox.lookup("#" + coordinates[0].toString())
-									.setTranslateY(Double.parseDouble(coordinates[2]));
+							Piece piece = (Piece) gameTable.lookup("#" + coordinates[0].toString());
+							piece.setTranslateX(Double.parseDouble(coordinates[1]));
+							piece.setTranslateY(Double.parseDouble(coordinates[2]));
 
-							if (((Piece) gameBox.lookup("#" + coordinates[0].toString())).isFaceUp() != Boolean
-									.parseBoolean(coordinates[3]))
-								((Piece) gameBox.lookup("#" + coordinates[0].toString())).flipImage();
+							if (piece.isFaceUp() != Boolean.parseBoolean(coordinates[3]))
+								piece.flipImage();
 						}
 					}
 				}
