@@ -340,6 +340,13 @@ public class FXMLController {
 			if (t.getClickCount() == 2) {
 				if (t.isShiftDown()) {
 					piece.setRotate(piece.getRotate() + 45);
+				} else if (t.isControlDown()) {
+					if (showingBoard) {
+						piece.setOwner(client.getUserName());
+					} else {
+						piece.resetOwner();
+					}
+					piece.setVisible(false);
 				} else {
 					piece.flipImage();
 				}
@@ -389,7 +396,7 @@ public class FXMLController {
 
 		// Moves the Piece
 		if (sendMessage)
-			client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + piece.isFaceUp() + ":" + piece.getRotate());
+			client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + piece.isFaceUp() + ":" + piece.getRotate() + ":" + piece.getOwner());
 	}
 
 	@FXML
@@ -533,7 +540,7 @@ public class FXMLController {
 					response = client.getNext();
 					if (response.equals("GETBOARD")) {
 						for (Node child : gameTable.getChildren())
-							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY() + ":" + ((Piece) child).isFaceUp() + ":" + child.getRotate());
+							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY() + ":" + ((Piece) child).isFaceUp() + ":" + child.getRotate() + ":" + ((Piece) child).getOwner());
 					} else {
 						String[] data = response.split(":", 3);
 						String userName = data[0];
@@ -543,7 +550,7 @@ public class FXMLController {
 							gameUpdateChat(userName + ": " + message);
 						} else if (type == 4) {
 							Platform.runLater(() -> {
-								String[] coordinates = message.split(":", 5);
+								String[] coordinates = message.split(":", 6);
 
 								Piece piece = (Piece) gameTable.lookup("#" + coordinates[0].toString());
 
@@ -555,6 +562,14 @@ public class FXMLController {
 
 								piece.toFront();
 								piece.setRotate(Double.parseDouble(coordinates[4]));
+								piece.setOwner(coordinates[5]);
+
+								if (showingBoard && piece.getOwner().equals("table!")) {
+									piece.setVisible(true);
+								} else if (!showingBoard && piece.getOwner().equals(client.getUserName())) {
+									piece.setVisible(true);
+								} else
+									piece.setVisible(false);
 							});
 						}
 					}

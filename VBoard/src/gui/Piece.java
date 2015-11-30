@@ -37,4 +37,8 @@ public class Piece extends javafx.scene.image.ImageView {
 		return faceUp;
 	}
 
+	public void resetOwner() {
+		this.owner = "table!";
+	}
+
 }
