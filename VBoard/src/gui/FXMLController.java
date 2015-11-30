@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import client.Client;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -540,6 +541,9 @@ public class FXMLController {
 							Piece piece = (Piece) gameTable.lookup("#" + coordinates[0].toString());
 							piece.setTranslateX(Double.parseDouble(coordinates[1]));
 							piece.setTranslateY(Double.parseDouble(coordinates[2]));
+							Platform.runLater(() -> {
+								piece.toFront();
+							});
 
 							if (piece.isFaceUp() != Boolean.parseBoolean(coordinates[3]))
 								piece.flipImage();
