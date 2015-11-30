@@ -335,9 +335,14 @@ public class FXMLController {
 	EventHandler<MouseEvent> imageOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
-			((Piece) t.getSource()).toFront();
+			Piece piece = (Piece) t.getSource();
+			piece.toFront();
 			if (t.getClickCount() == 2) {
-				((Piece) (t.getSource())).flipImage();
+				if (t.isShiftDown()) {
+					piece.setRotate(piece.getRotate() + 45);
+				} else {
+					piece.flipImage();
+				}
 			}
 			sendTranslate(t, true);
 		}
@@ -378,12 +383,13 @@ public class FXMLController {
 		double newTranslateX = orgTranslateX + offsetX;
 		double newTranslateY = orgTranslateY + offsetY;
 		String pieceID = ((Node) t.getSource()).getId();
-		((Node) (t.getSource())).setTranslateX(newTranslateX);
-		((Node) (t.getSource())).setTranslateY(newTranslateY);
+		Piece piece = (Piece) t.getSource();
+		piece.setTranslateX(newTranslateX);
+		piece.setTranslateY(newTranslateY);
 
 		// Moves the Piece
 		if (sendMessage)
-			client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + ((Piece) (t.getSource())).isFaceUp());
+			client.moveGame(pieceID + ":" + newTranslateX + ":" + newTranslateY + ":" + piece.isFaceUp() + ":" + piece.getRotate());
 	}
 
 	@FXML
@@ -527,7 +533,7 @@ public class FXMLController {
 					response = client.getNext();
 					if (response.equals("GETBOARD")) {
 						for (Node child : gameTable.getChildren())
-							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY() + ":" + ((Piece) child).isFaceUp());
+							client.moveGame(child.getId() + ":" + child.getTranslateX() + ":" + child.getTranslateY() + ":" + ((Piece) child).isFaceUp() + ":" + child.getRotate());
 					} else {
 						String[] data = response.split(":", 3);
 						String userName = data[0];
@@ -537,7 +543,7 @@ public class FXMLController {
 							gameUpdateChat(userName + ": " + message);
 						} else if (type == 4) {
 							Platform.runLater(() -> {
-								String[] coordinates = message.split(":", 4);
+								String[] coordinates = message.split(":", 5);
 
 								Piece piece = (Piece) gameTable.lookup("#" + coordinates[0].toString());
 
@@ -548,6 +554,7 @@ public class FXMLController {
 									piece.flipImage();
 
 								piece.toFront();
+								piece.setRotate(Double.parseDouble(coordinates[4]));
 							});
 						}
 					}
