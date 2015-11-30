@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import client.Client;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -535,14 +536,19 @@ public class FXMLController {
 						if (type == 3) {
 							gameUpdateChat(userName + ": " + message);
 						} else if (type == 4) {
-							String[] coordinates = message.split(":", 4);
+							Platform.runLater(() -> {
+								String[] coordinates = message.split(":", 4);
 
-							Piece piece = (Piece) gameTable.lookup("#" + coordinates[0].toString());
-							piece.setTranslateX(Double.parseDouble(coordinates[1]));
-							piece.setTranslateY(Double.parseDouble(coordinates[2]));
+								Piece piece = (Piece) gameTable.lookup("#" + coordinates[0].toString());
 
-							if (piece.isFaceUp() != Boolean.parseBoolean(coordinates[3]))
-								piece.flipImage();
+								piece.setTranslateX(Double.parseDouble(coordinates[1]));
+								piece.setTranslateY(Double.parseDouble(coordinates[2]));
+
+								if (piece.isFaceUp() != Boolean.parseBoolean(coordinates[3]))
+									piece.flipImage();
+
+								piece.toFront();
+							});
 						}
 					}
 				}
