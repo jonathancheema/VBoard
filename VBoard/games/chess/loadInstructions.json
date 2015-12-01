@@ -1,0 +1,13 @@
+{
+	"board": "chessBoard.jpg",
+	"stack": [
+		{	"pieces":[ 
+				{"backImage": "none"},
+				{"shuffle": true },
+				{"xPos": 20},
+				{"yPos": 20},
+				{"count": 1}
+			]
+		}
+	]
+}

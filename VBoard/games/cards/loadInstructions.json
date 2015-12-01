@@ -5,7 +5,8 @@
 				{"backImage": "b1fv.png"},
 				{"shuffle": true },
 				{"xPos": 20},
-				{"yPos": 20}
+				{"yPos": 20},
+				{"count": 1}
 			]
 		}
 	]

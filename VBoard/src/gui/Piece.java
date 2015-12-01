@@ -14,6 +14,12 @@ public class Piece extends javafx.scene.image.ImageView {
 		faceImage = new Image(faceImageLoc);
 		this.setImage(backImage);
 	}
+	
+	public Piece(String faceImageLoc) {
+		backImage = new Image(faceImageLoc);
+		faceImage = new Image(faceImageLoc);
+		this.setImage(backImage);
+	}
 
 	public void flipImage() {
 		if (faceUp == true) {

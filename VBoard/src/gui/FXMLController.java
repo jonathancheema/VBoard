@@ -10,6 +10,7 @@ import java.util.Collections;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONString;
 
 import client.Client;
 import javafx.application.Platform;
@@ -28,6 +29,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -263,9 +265,13 @@ public class FXMLController {
 	private AnchorPane gameTable;
 
 	private void setUpGamePieces(String gameName) {
+		System.out.println("games/" + gameName + "/loadInstructions.json");
 		String jsonData = readFile("games/" + gameName + "/loadInstructions.json");
 		JSONObject jobj = new JSONObject(jsonData);
 		JSONArray stackFolders = new JSONArray(jobj.getJSONArray("stack").toString());
+		String boardName = (String) jobj.get("board");
+		
+		setBoard(gameName,boardName);
 
 		for (int stackIndex = 0; stackIndex < stackFolders.length(); stackIndex++) {
 			JSONObject folderObj = stackFolders.getJSONObject(stackIndex);
@@ -276,32 +282,66 @@ public class FXMLController {
 			boolean shuffle = (boolean) ((JSONObject) folderArray.get(1)).getBoolean("shuffle");
 			double xPos = (double) ((JSONObject) folderArray.get(2)).getDouble("xPos");
 			double yPos = (double) ((JSONObject) folderArray.get(3)).getDouble("yPos");
-			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos);
+			int count = (int) ((JSONObject) folderArray.getJSONObject(4)).getInt("count");
+			System.out.println(folderName);
+			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos, count);
 		}
 
 	}
+	
+	private void setBoard (String gameName, String boardName) {
+		if (boardName.compareTo("none") != 0 ) {
+			File imageLoc = new File("games/" + gameName + "/board/"+boardName);
+			Image mainBoardImage = new Image("File:"+imageLoc);
+			ImageView mainBoard = new ImageView();
+			mainBoard.setImage(mainBoardImage);
+			mainBoard.setId("mainBoard");
+			mainBoard.setX(70);
+			mainBoard.setY(50);
+			this.gameTable.getChildren().add(mainBoard);
+		}
+	}
 
-	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos) {
+	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos, int count) {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
 		String[] images = imageDir.list();
 		ArrayList<ImageView> pieces = new ArrayList<ImageView>();
 
 		for (int i = 0; i < images.length; i++) {
-
+			
 			if (images[i].toString().compareTo(backImageName) != 0) {
 				String faceLoc = "File:games/" + gameName + "/" + folderName + "/" + images[i];
 
-				Piece currentPiece = new Piece(faceLoc, backLoc);
+				if (count > 1) {
+					for (int countIndex = 0; countIndex < count; countIndex++) {
+						Piece currentPiece = new Piece (faceLoc, backLoc);
+						currentPiece.setId("image_"+i+"_"+countIndex);
+						currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
+						currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
+						currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+						currentPiece.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+						currentPiece.setLayoutX(xPos);
+						currentPiece.setLayoutY(yPos);
+						pieces.add(currentPiece);
+					}
+				} else {
+					Piece currentPiece;
+					if (backImageName.compareTo("none") == 0) {
+						currentPiece = new Piece(faceLoc);
+					} else {
+						currentPiece = new Piece(faceLoc, backLoc);
+					}
 
-				currentPiece.setId("image_" + i);
-				currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
-				currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
-				currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
-				currentPiece.setOnMouseDragged(imageOnMouseDraggedEventHandler);
-				currentPiece.setLayoutX(xPos);
-				currentPiece.setLayoutY(yPos);
-				pieces.add(currentPiece);
+					currentPiece.setId("image_" + i);
+					currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
+					currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
+					currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
+					currentPiece.setOnMouseDragged(imageOnMouseDraggedEventHandler);
+					currentPiece.setLayoutX(xPos);
+					currentPiece.setLayoutY(yPos);
+					pieces.add(currentPiece);
+				}
 			}
 		}
 		if (shuffle == true) {

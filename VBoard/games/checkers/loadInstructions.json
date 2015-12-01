@@ -1,0 +1,20 @@
+{
+	"board": "checkerboard.jpg",
+	"stack": [
+		{	"redPieces":[ 
+				{"backImage": "redflip.png"},
+				{"shuffle": false },
+				{"xPos": 20},
+				{"yPos": 20},
+				{"count": 12}
+			]},
+		{	"blackPieces":[
+				{"backImage": "blackflip.png"},
+				{"shuffle": false },
+				{"xPos": 40},
+				{"yPos": 80},
+				{"count": 12}
+			]
+		}
+	]
+}
