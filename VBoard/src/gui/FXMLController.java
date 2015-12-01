@@ -284,7 +284,8 @@ public class FXMLController {
 			double yPos = (double) ((JSONObject) folderArray.get(3)).getDouble("yPos");
 			int count = (int) ((JSONObject) folderArray.getJSONObject(4)).getInt("count");
 			System.out.println(folderName);
-			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos, count);
+			
+			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos, count, stackIndex+1);
 		}
 
 	}
@@ -302,7 +303,7 @@ public class FXMLController {
 		}
 	}
 
-	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos, int count) {
+	private void createImageViews(String gameName, String folderName, String backImageName, boolean shuffle, double xPos, double yPos, int count, int folderNum) {
 		File imageDir = new File("games/" + gameName + "/" + folderName);
 		String backLoc = "File:games/" + gameName + "/" + folderName + "/" + backImageName;
 		String[] images = imageDir.list();
@@ -333,7 +334,7 @@ public class FXMLController {
 						currentPiece = new Piece(faceLoc, backLoc);
 					}
 
-					currentPiece.setId("image_" + i);
+					currentPiece.setId("image_" + folderNum + "_" + i);
 					currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
 					currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
 					currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
