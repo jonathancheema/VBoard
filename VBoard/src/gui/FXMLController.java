@@ -317,7 +317,7 @@ public class FXMLController {
 				if (count > 1) {
 					for (int countIndex = 0; countIndex < count; countIndex++) {
 						Piece currentPiece = new Piece (faceLoc, backLoc);
-						currentPiece.setId("image_"+i+"_"+countIndex);
+						currentPiece.setId("image_"+folderNum+"_"+i+"_"+countIndex);
 						currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
 						currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
 						currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
