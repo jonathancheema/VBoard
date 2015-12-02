@@ -1,13 +1,19 @@
 {
 	"board": "chessBoard.jpg",
 	"stack": [
-		{	"pieces":[ 
+		{	"whitePieces":[ 
 				{"backImage": "none"},
-				{"shuffle": true },
+				{"shuffle": false},
 				{"xPos": 20},
 				{"yPos": 20},
 				{"count": 1}
-			]
-		}
+			]},
+		{	"blackPieces":[
+				{"backImage": "none"},
+				{"shuffle": false},
+				{"xPos": 20},
+				{"yPos": 200},
+				{"count": 1}
+		]}
 	]
 }

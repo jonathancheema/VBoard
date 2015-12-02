@@ -272,6 +272,7 @@ public class FXMLController {
 		String boardName = (String) jobj.get("board");
 		
 		setBoard(gameName,boardName);
+		int folderNum = 0;
 
 		for (int stackIndex = 0; stackIndex < stackFolders.length(); stackIndex++) {
 			JSONObject folderObj = stackFolders.getJSONObject(stackIndex);
@@ -283,9 +284,10 @@ public class FXMLController {
 			double xPos = (double) ((JSONObject) folderArray.get(2)).getDouble("xPos");
 			double yPos = (double) ((JSONObject) folderArray.get(3)).getDouble("yPos");
 			int count = (int) ((JSONObject) folderArray.getJSONObject(4)).getInt("count");
-			System.out.println(folderName);
+			System.out.println(folderName + " : stackIndex = "+folderNum);
 			
-			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos, count, stackIndex+1);
+			createImageViews(gameName, folderName, backImageName, shuffle, xPos, yPos, count, folderNum);
+			folderNum++;
 		}
 
 	}
@@ -317,7 +319,7 @@ public class FXMLController {
 				if (count > 1) {
 					for (int countIndex = 0; countIndex < count; countIndex++) {
 						Piece currentPiece = new Piece (faceLoc, backLoc);
-						currentPiece.setId("image_"+folderNum+"_"+i+"_"+countIndex);
+						currentPiece.setId("image_"+folderNum+"_"+countIndex);
 						currentPiece.setOnMouseClicked(imageOnMouseClickedEventHandler);
 						currentPiece.setOnMousePressed(imageOnMousePressedEventHandler);
 						currentPiece.setOnMouseReleased(imageOnMouseReleasedEventHandler);
